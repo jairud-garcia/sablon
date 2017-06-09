@@ -6,7 +6,7 @@ module Sablon
         if content = expr.evaluate(env.context)
           field.replace(Sablon::Content.wrap(content), env)
         else
-          errors<<{expression: expr, message: 'NotFoundInContext'}
+          errors<<{expression: expr.inspect, message: 'NotFoundInContext'}
           field.remove
         end
       end
@@ -17,7 +17,7 @@ module Sablon
         value = list_expr.evaluate(env.context)
         value = value.to_ary if value.respond_to?(:to_ary)
         unless value.is_a?(Enumerable)
-          errors<<{expression: list_expr, message: 'NotEnumerable'}
+          errors<<{expression: list_expr.inspect, message: 'NotEnumerable'}
           raise ContextError, "The expression #{list_expr.inspect} should evaluate to an enumerable but was: #{value.inspect}" 
         end
 
