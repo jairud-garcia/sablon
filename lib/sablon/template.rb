@@ -45,7 +45,8 @@ module Sablon
     # We need to render the xml without indent and whitespace.
     def process(processor, content, *args)
       document = Nokogiri::XML(content)
-      processor.process(document, *args).to_xml(indent: 0, save_with: 0)
+      processor_instance=processor.new(document)
+      processor_instance.process(*args).to_xml(indent: 0, save_with: 0)
     end
   end
 end

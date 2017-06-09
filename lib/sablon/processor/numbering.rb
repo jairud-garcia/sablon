@@ -7,10 +7,9 @@ module Sablon
         </w:num>
       XML
 
-      def self.process(doc, env)
-        processor = new(doc)
-        processor.manipulate env
-        doc
+      def process(env)
+        self.manipulate env
+        @doc
       end
 
       def initialize(doc)

@@ -2,19 +2,20 @@
 module Sablon
   module Processor
     class Document
-      def self.process(xml_node, env, properties = {})
-        processor = new(parser)
-        processor.manipulate xml_node, env
-        processor.write_properties xml_node, properties if properties.any?
-        xml_node
+
+      def process(env, properties = {})
+        self.manipulate @xml_node, env
+        self.write_properties @xml_node, properties if properties.any?
+        @xml_node
       end
 
       def self.parser
         @parser ||= Sablon::Parser::MailMerge.new
       end
 
-      def initialize(parser)
-        @parser = parser
+      def initialize(xml_node)
+        @xml_node = xml_node
+        @parser = Document.parser
       end
 
       def manipulate(xml_node, env)
@@ -59,7 +60,8 @@ module Sablon
         def process(env)
           replaced_node = Nokogiri::XML::Node.new("tmp", start_node.document)
           replaced_node.children = Nokogiri::XML::NodeSet.new(start_node.document, body.map(&:dup))
-          Processor::Document.process replaced_node, env
+          document_processor_instance=Processor::Document.new replaced_node
+          document_processor_instance.process env
           replaced_node.children
         end
 
