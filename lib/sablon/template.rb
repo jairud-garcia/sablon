@@ -50,8 +50,11 @@ module Sablon
     def process(processor, content, *args)
       document = Nokogiri::XML(content)
       processor_instance=processor.new(document)
-      xml_document=processor_instance.process(*args).to_xml(indent: 0, save_with: 0)
-      @errors=processor_instance.errors
+      begin 
+        xml_document=processor_instance.process(*args).to_xml(indent: 0, save_with: 0)
+      ensure
+        @errors=processor_instance.errors
+      end
       xml_document
     end
   end
