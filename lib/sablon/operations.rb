@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 module Sablon
   module Statement
-    class Insertion < Struct.new(:expr, :field)
+    class Insertion < Struct.new(:expr, :field, :errors)
       def evaluate(env)
         if content = expr.evaluate(env.context)
           field.replace(Sablon::Content.wrap(content), env)
         else
+          errors<<{expression: expr, message: 'NotFoundInContext'}
           field.remove
         end
       end
     end
 
-    class Loop < Struct.new(:list_expr, :iterator_name, :block)
+    class Loop < Struct.new(:list_expr, :iterator_name, :block, :errors)
       def evaluate(env)
         value = list_expr.evaluate(env.context)
         value = value.to_ary if value.respond_to?(:to_ary)
@@ -25,7 +26,7 @@ module Sablon
       end
     end
 
-    class Condition < Struct.new(:conditon_expr, :block, :predicate)
+    class Condition < Struct.new(:conditon_expr, :block, :predicate, :errors)
       def evaluate(env)
         value = conditon_expr.evaluate(env.context)
         if truthy?(predicate ? value.public_send(predicate) : value)
@@ -45,7 +46,7 @@ module Sablon
       end
     end
 
-    class Comment < Struct.new(:block)
+    class Comment < Struct.new(:block,:errors)
       def evaluate(_env)
         block.replace []
       end

@@ -4,6 +4,10 @@ module Sablon
       @path = path
     end
 
+    def errors
+      @errors||[]
+    end
+
     # Same as +render_to_string+ but writes the processed template to +output_path+.
     def render_to_file(output_path, context, properties = {})
       File.open(output_path, 'wb') do |f|
@@ -46,7 +50,9 @@ module Sablon
     def process(processor, content, *args)
       document = Nokogiri::XML(content)
       processor_instance=processor.new(document)
-      processor_instance.process(*args).to_xml(indent: 0, save_with: 0)
+      xml_document=processor_instance.process(*args).to_xml(indent: 0, save_with: 0)
+      @errors=processor_instance.errors
+      xml_document
     end
   end
 end

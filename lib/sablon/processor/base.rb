@@ -4,6 +4,11 @@ module Sablon
     class Base
       def initialize(xml_node)
         @xml_node = xml_node
+        @errors=[]
+      end
+
+      def errors
+        @errors
       end
     end
   end
