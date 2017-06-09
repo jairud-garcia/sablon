@@ -1,6 +1,8 @@
+require 'sablon/processor/base'
+
 module Sablon
   module Processor
-    class Numbering
+    class Numbering < Base
       LIST_DEFINITION = <<-XML.gsub(/^\s+/, '').tr("\n", '')
         <w:num w:numId="%s">
           <w:abstractNumId w:val="%s" />
@@ -9,11 +11,7 @@ module Sablon
 
       def process(env)
         self.manipulate env
-        @doc
-      end
-
-      def initialize(doc)
-        @doc = doc
+        @xml_node
       end
 
       def manipulate(env)
@@ -25,16 +23,16 @@ module Sablon
           container.prepend_child abstract_num_copy
           container.add_child(LIST_DEFINITION % [definition.numid, abstract_num_copy['w:abstractNumId']])
         end
-        @doc
+        @xml_node
       end
 
       private
       def container
-        @container ||= @doc.xpath('//w:numbering').first
+        @container ||= @xml_node.xpath('//w:numbering').first
       end
 
       def find_definition(style)
-        abstract_num = @doc.xpath("//w:abstractNum[descendant-or-self::*[w:pStyle[@w:val='#{style}']]]").first
+        abstract_num = @xml_node.xpath("//w:abstractNum[descendant-or-self::*[w:pStyle[@w:val='#{style}']]]").first
         if abstract_num
           abstract_num
         else

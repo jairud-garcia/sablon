@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+require 'sablon/processor/base'
 module Sablon
   module Processor
-    class Document
-
+    class Document < Base
+      
       def process(env, properties = {})
         self.manipulate @xml_node, env
         self.write_properties @xml_node, properties if properties.any?
@@ -14,7 +15,7 @@ module Sablon
       end
 
       def initialize(xml_node)
-        @xml_node = xml_node
+        super(xml_node)
         @parser = Document.parser
       end
 
