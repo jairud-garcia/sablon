@@ -54,12 +54,19 @@ module Sablon
         block.replace []
       end
     end
+
+    class Image < Struct.new(:image_reference, :block, :errors)
+      def evaluate(env)
+        image = image_reference.evaluate(env.context)
+        block.replace([image])
+      end
+    end
   end
 
   module Expression
     class Variable < Struct.new(:name)
       def evaluate(context)
-        context[name]
+        context[name] 
       end
 
       def inspect
