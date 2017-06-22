@@ -66,7 +66,12 @@ module Sablon
   module Expression
     class Variable < Struct.new(:name)
       def evaluate(context)
-        context[name] 
+        case context
+        when Hash
+          context[name] 
+        else
+          context.public_send name if context.respond_to?(name)
+        end
       end
 
       def inspect
