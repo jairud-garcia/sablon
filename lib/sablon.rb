@@ -16,6 +16,7 @@ require "sablon/parser/mail_merge"
 require "sablon/operations"
 require "sablon/html/converter"
 require "sablon/content"
+require "sablon/mergeable_hash"
 
 module Sablon
   class TemplateError < ArgumentError; end

@@ -8,7 +8,8 @@ module Sablon
 
     # returns a new environment with merged contexts
     def alter_context(context = {})
-      new_context = @context.merge(context)
+      new_context = MergeableHash.new(@context)
+      new_context.merge!(context)
       Environment.new(nil, new_context, self)
     end
 
