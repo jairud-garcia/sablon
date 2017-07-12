@@ -21,7 +21,7 @@ class SablonImageTest < Sablon::TestCase
     output_path = @base_path + "sandbox/images.docx"
     template = Sablon.template @template_path
     context = {
-      items: [
+      "items"=> [
         {
           title: "C-3PO",
           image: @images[0]

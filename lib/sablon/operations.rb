@@ -83,12 +83,7 @@ module Sablon
       def evaluate(context)
         if receiver = receiver_expr.evaluate(context)
           expression.split(".").inject(receiver) do |local, m|
-            case local
-            when Hash
-              local[m]
-            else
-              local.public_send m if local.respond_to?(m)
-            end
+            MergeableHash.new(local)[m]
           end
         end
       end

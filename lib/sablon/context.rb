@@ -8,7 +8,7 @@ module Sablon
   module Context
     class << self
       def transform_hash(hash)
-        Hash[hash.map { |k, v| transform_pair(k.to_s, v) }]
+        MergeableHash.new(hash)
       end
 
       private

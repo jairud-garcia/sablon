@@ -23,7 +23,7 @@ module Sablon
     private
 
     def render(context, properties = {})
-      env = Sablon::Environment.new(self, context)
+      env = Sablon::Environment.new(self, MergeableHash.new(context))
       Zip.sort_entries = true # required to process document.xml before numbering.xml
       Zip::OutputStream.write_buffer(StringIO.new) do |out|
         Sablon::Processor::Image.add_images_to_zip!(context, out)

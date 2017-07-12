@@ -2,11 +2,7 @@ module Sablon
   class MergeableHash < Hash
     def initialize(value={})
       @_merged_objects=[]
-      if value.is_a?(Hash)
-        value.each{|k,v| self[k]=v}
-      else
-        @_merged_objects<<value
-      end
+      self.merge!(value)
     end
     def [] key
       merged_value=lookup(key)
@@ -24,17 +20,31 @@ module Sablon
       end
       [false]
     end
-    def merge!(object)
-      if object.is_a?(Hash)
-        super(object)
-      else
-        @_merged_objects<<object
+    def merge!(value)
+      if value.is_a?(Hash)
+        value.each{|k,v| self[k.to_s]=v}
       end
+      if value.is_a?(MergeableHash)
+        @_merged_objects+=value._merged_objects.dup
+      else
+        @_merged_objects<<value
+      end
+
+      # if object.is_a?(Hash)
+      #   super(object)
+      # else
+      #   @_merged_objects<<object
+      # end
     end
     def merge(object)
       result=self.dup
       result.merge!(object)
       result
+    end
+
+    protected
+    def _merged_objects
+      @_merged_objects
     end
   end
 end

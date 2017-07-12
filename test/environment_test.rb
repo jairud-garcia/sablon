@@ -15,9 +15,13 @@ class EnvironmentTest < Sablon::TestCase
     env = Sablon::Environment.new(nil, a: 1, b: { c: 2, "d" => 3 })
     # alter context to change a single key and set a new one
     env2 = env.alter_context(a: "a", e: "new-key")
-    assert_equal({ "a" => "a", "b" => { "c" => 2, "d" => 3 }, "e" => "new-key" }, env2.context)
+    assert_equal("a", env2.context["a"])
+    assert_equal("new-key", env2.context['e'])
+    assert_equal({ c: 2, "d" => 3 }, env2.context["b"])
+    
+    # assert_equal({ "a" => "a", "b" => { "c" => 2, "d" => 3 }, "e" => "new-key" }, env2.context)
     # check that the old context was not modified
-    assert_equal({"a" => 1, "b" => { "c" => 2, "d" => 3 }}, env.context)
+    assert_equal({"a" => 1, "b" => { :c => 2, "d" => 3 }}, env.context)
     # check that numbering and template are the same references
     assert env.template.equal?(env2.template), "#{env.template} != #{env2.template}"
     assert env.numbering.equal?(env2.numbering), "#{env.numbering} != #{env2.numbering}"

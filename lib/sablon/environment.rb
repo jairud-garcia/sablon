@@ -26,7 +26,8 @@ module Sablon
         @numbering = Numbering.new
       end
       #
-      if context.is_a?(Hash)
+      @context = context
+      if context.instance_of?(Hash)
         @context = Context.transform_hash(context)
       else
         @context = context

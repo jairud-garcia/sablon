@@ -5,7 +5,7 @@ class MergeableHash < Sablon::TestCase
 
   def test_hash_initializer
     mergeable_hash=Sablon::MergeableHash.new a: 1, b:'b'
-    assert_equal({ b:'b', a: 1}, mergeable_hash)
+    assert_equal({ 'b'=>'b', 'a'=> 1}, mergeable_hash)
   end
 
   def test_object_initializer
