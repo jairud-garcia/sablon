@@ -22,6 +22,7 @@ module Sablon
       end
       def self.reset
         @@_images=[]
+        @@images_rids=nil
         @@_last_rel_id=nil
       end
       def self.next_rel_id
@@ -48,8 +49,8 @@ module Sablon
       end
 
       def self.add_images_to_zip!(context, zip_out)
-        (@@images = Sablon::Processor::Image.images).each do |image|
-          zip_out.put_next_entry(File.join('word', 'media', image.name))
+        (Sablon::Processor::Image.images).each do |image|
+          zip_out.put_next_entry(File.join('word', 'media', image.name),nil,nil,::Zip::Entry::STORED)
           zip_out.write(image.data)
         end
       end
@@ -65,8 +66,8 @@ module Sablon
       def next_rel_id
         @@_last_rel_id=@xml_node.xpath('r:Relationships/r:Relationship', 'r' => RELATIONSHIPS_NS_URI).inject(0) do |max ,n|
           id = n.attributes['Id'].to_s[3..-1].to_i
-          [id, max].max + 1
-        end
+          [id, max].max
+        end+1
       end
     end
   end
