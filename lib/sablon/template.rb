@@ -17,7 +17,11 @@ module Sablon
 
     # Process the template. The +context+ hash will be available in the template.
     def render_to_string(context, properties = {})
-      render(context, properties).string
+      begin 
+        render(context, properties).string
+      ensure
+        Sablon::Processor::Image.reset
+      end
     end
 
     private
@@ -25,9 +29,9 @@ module Sablon
     def render(context, properties = {})
       env = Sablon::Environment.new(self, MergeableHash.new(context))
       Zip.sort_entries = true # required to process document.xml before numbering.xml
-      Zip::OutputStream.write_buffer(StringIO.new) do |out|
-        Sablon::Processor::Image.add_images_to_zip!(context, out)
-        Zip::File.open(@path).each do |entry|
+      Zip::OutputStream.write_buffer(StringIO.new) do |out|        
+        files = Zip::File.open(@path)
+        files.each do |entry|
           entry_name = entry.name
           out.put_next_entry(entry_name)
           content = entry.get_input_stream.read
@@ -39,15 +43,22 @@ module Sablon
             out.write(process(Processor::Numbering, content, env))
             #out.write(process(Processor::Numbering, content, env))
           elsif entry_name == 'word/_rels/document.xml.rels'
-            out.write(process(Processor::Image, content, properties, out))
+            process(Processor::Image, content, properties, out)
           elsif entry_name == '[Content_Types].xml'
             out.write(process(Processor::ContentType, content, properties, out))
           else
             out.write(content)
           end
         end
+
+        entry=files.detect{|file| file.name=='word/_rels/document.xml.rels'}
+        out.put_next_entry(entry.name)
+        content = entry.get_input_stream.read
+        out.write(process(Processor::Image, content, properties, out))
+        Sablon::Processor::Image.add_images_to_zip!(context, out)
       end
     end
+
 
     # process the sablon xml template with the given +context+.
     #

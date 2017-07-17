@@ -39,6 +39,7 @@ class EnvironmentTest < Sablon::TestCase
     result = Sablon::Context.values_of(context, Sablon::Image::Definition)
 
     assert_equal [image], result
+    Sablon::Processor::Image.reset
   end
 
   def test_values_of_nested
@@ -62,6 +63,7 @@ class EnvironmentTest < Sablon::TestCase
     result = Sablon::Context.values_of(context, Sablon::Image::Definition)
 
     assert_equal [image, image, image, image], result
+    Sablon::Processor::Image.reset
   end
 
   def test_values_of_empty

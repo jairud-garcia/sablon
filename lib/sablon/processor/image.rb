@@ -4,39 +4,51 @@ require 'sablon/processor/base'
 module Sablon
   module Processor
     class Image < Base
+      @@_last_rel_id=nil
       PICTURE_NS_URI = 'http://schemas.openxmlformats.org/drawingml/2006/picture'
       MAIN_NS_URI = 'http://schemas.openxmlformats.org/drawingml/2006/main'
       RELATIONSHIPS_NS_URI = 'http://schemas.openxmlformats.org/package/2006/relationships'
       IMAGE_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image'
 
       def process(properties, out)
-        #processor = new(doc, properties, out)
         self.manipulate
       end
 
-      # def initialize(doc, properties, out)
-      #   @xml_node = doc
-      #   @properties = properties
-      #   @out = out
-      # end
+      def self.add_image(image)
+        self.images<<image
+      end
+      def self.images
+        @@_images||=[]
+      end
+      def self.reset
+        @@_images=[]
+        @@_last_rel_id=nil
+      end
+      def self.next_rel_id
+        if @@_last_rel_id
+          next_rel=@@_last_rel_id
+          @@_last_rel_id+=1
+          next_rel
+        end
+      end
 
       def manipulate
         next_id = next_rel_id
         @@images_rids = {}
         relationships = @xml_node.at_xpath('r:Relationships', r: RELATIONSHIPS_NS_URI)
 
-        @@images.to_a.each do |image|
-          relationships.add_child("<Relationship Id='rId#{next_id}' Type='#{IMAGE_TYPE}' Target='media/#{image.name}'/>")
-          image.rid = next_id
-          @@images_rids[image.name.match(/(.*)\.[^.]+$/)[1]] = next_id
-          next_id += 1
+        Sablon::Processor::Image.images.each do |image|
+          image.rid||=next_id
+          relationships.add_child("<Relationship Id='rId#{image.rid}' Type='#{IMAGE_TYPE}' Target='media/#{image.name}'/>")
+          @@images_rids[image.name.match(/(.*)\.[^.]+$/)[1]] = image.rid
+          next_id+=1
         end
 
         @xml_node
       end
 
       def self.add_images_to_zip!(context, zip_out)
-        (@@images = Sablon::Context.values_of(context, Sablon::Image::Definition)).each do |image|
+        (@@images = Sablon::Processor::Image.images).each do |image|
           zip_out.put_next_entry(File.join('word', 'media', image.name))
           zip_out.write(image.data)
         end
@@ -46,13 +58,15 @@ module Sablon
         @@images_rids
       end
 
+      
+
       private
 
       def next_rel_id
-        @xml_node.xpath('r:Relationships/r:Relationship', 'r' => RELATIONSHIPS_NS_URI).inject(0) do |max ,n|
+        @@_last_rel_id=@xml_node.xpath('r:Relationships/r:Relationship', 'r' => RELATIONSHIPS_NS_URI).inject(0) do |max ,n|
           id = n.attributes['Id'].to_s[3..-1].to_i
-          [id, max].max
-        end + 1
+          [id, max].max + 1
+        end
       end
     end
   end
