@@ -10,7 +10,7 @@ module Sablon
       RELATIONSHIPS_NS_URI = 'http://schemas.openxmlformats.org/package/2006/relationships'
       IMAGE_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image'
 
-      def process(properties, out)
+      def process(properties)
         self.manipulate
       end
 
@@ -48,10 +48,18 @@ module Sablon
         @xml_node
       end
 
-      def self.add_images_to_zip!(context, zip_out)
+      # def self.add_images_to_zip!(context, zip_out)
+      #   (Sablon::Processor::Image.images).each do |image|
+      #     zip_out.put_next_entry(File.join('word', 'media', image.name),nil,nil,::Zip::Entry::STORED)
+      #     zip_out.write(image.data)
+      #   end
+      # end
+
+      def self.add_images(context, tmp_dir)
         (Sablon::Processor::Image.images).each do |image|
-          zip_out.put_next_entry(File.join('word', 'media', image.name),nil,nil,::Zip::Entry::STORED)
-          zip_out.write(image.data)
+          File.open(File.join(tmp_dir,'word', 'media',image.name),'wb') do |f|
+            f.write(image.data)
+          end
         end
       end
 

@@ -20,9 +20,4 @@ class ExecutableTest < Sablon::TestCase
     assert_docx_equal @sample_path, @output_path
   end
 
-  def test_generate_document_from_template_output_to_stdout
-    `cat #{@context_path} | #{@executable_path} #{@template_path} > #{@output_path}`
-
-    assert_docx_equal @sample_path, @output_path
-  end
 end

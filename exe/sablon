@@ -20,7 +20,5 @@ template = Sablon.template(template_path)
 
 if !ARGV[1].nil? && !ARGV[1].empty?
   output_path = File.expand_path(ARGV[1])
-  template.render_to_file(output_path, context, section_properties)
-else
-  $stdout.print template.render_to_string(context, section_properties)
+  template.render_to_file(output_path, context, section_properties) 
 end

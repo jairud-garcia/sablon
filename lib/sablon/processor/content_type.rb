@@ -12,7 +12,7 @@ module Sablon
         bmp: 'image/bmp'
       }
 
-      def process(properties, out)
+      def process(properties)
         TYPES.each do |extension, content_type|
           unless ContentType.extensions(@xml_node).include?(extension.to_s)
             node = Nokogiri::XML::Node.new('Default', @xml_node)

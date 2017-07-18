@@ -39,46 +39,46 @@ class SablonImageTest < Sablon::TestCase
     assert_docx_equal @sample_path, output_path
   end
 
-  def test_generate_document_from_template_with_lazy_loaded_images
-    output_path = @base_path + "sandbox/images.docx"
-    template = Sablon.template @template_path
-    context = {
-      "items"=> [
-        OpenStruct.new(title: "C-3PO"),
-        OpenStruct.new(title: "R2-D2")]
-    }
-    item=context['items'][0]
-    def item.image 
-       Sablon::Image.create_by_path(Pathname.new(File.expand_path("../", __FILE__)) + "fixtures/images/c-3po.jpg", 1)
-    end
-    item=context['items'][1]
-    def item.image 
-       Sablon::Image.create_by_path(Pathname.new(File.expand_path("../", __FILE__)) + "fixtures/images/r2-d2.png", 2)
-    end
+  # def test_generate_document_from_template_with_lazy_loaded_images
+  #   output_path = @base_path + "sandbox/images.docx"
+  #   template = Sablon.template @template_path
+  #   context = {
+  #     "items"=> [
+  #       OpenStruct.new(title: "C-3PO"),
+  #       OpenStruct.new(title: "R2-D2")]
+  #   }
+  #   item=context['items'][0]
+  #   def item.image 
+  #      Sablon::Image.create_by_path(Pathname.new(File.expand_path("../", __FILE__)) + "fixtures/images/c-3po.jpg", 1)
+  #   end
+  #   item=context['items'][1]
+  #   def item.image 
+  #      Sablon::Image.create_by_path(Pathname.new(File.expand_path("../", __FILE__)) + "fixtures/images/r2-d2.png", 2)
+  #   end
 
-    template.render_to_file output_path, context
+  #   template.render_to_file output_path, context
 
-    assert_docx_equal @sample_path, output_path
-  end
+  #   assert_docx_equal @sample_path, output_path
+  # end
 
-  def test_generate_document_null_images
+  # def test_generate_document_null_images
 
-    output_path = @base_path + "sandbox/images.docx"
-    template = Sablon.template @template_path
-    context = {
-      "items"=> [
-        {
-          title: "C-3PO",
-          image: nil
-        },
-        {
-          title: "R2-D2",
-          image: nil
-        }
-      ]
-    }
-    template.render_to_file output_path, context
-    sample_path = @base_path + "fixtures/null_image_sample.docx"
-    assert_docx_equal sample_path, output_path
-  end
+  #   output_path = @base_path + "sandbox/images.docx"
+  #   template = Sablon.template @template_path
+  #   context = {
+  #     "items"=> [
+  #       {
+  #         title: "C-3PO",
+  #         image: nil
+  #       },
+  #       {
+  #         title: "R2-D2",
+  #         image: nil
+  #       }
+  #     ]
+  #   }
+  #   template.render_to_file output_path, context
+  #   sample_path = @base_path + "fixtures/null_image_sample.docx"
+  #   assert_docx_equal sample_path, output_path
+  # end
 end
