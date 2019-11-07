@@ -53,14 +53,20 @@ module Sablon
       end
 
       def append_to(paragraph, display_node, env)
-        string.scan(/[^\n]+|\n/).reverse.each do |part|
-          if part == "\n"
-            display_node.add_next_sibling Nokogiri::XML::Node.new "w:br", display_node.document
-          else
-            text_part = display_node.dup
-            text_part.content = part
-            display_node.add_next_sibling text_part
+        begin
+          string.scan(/[^\n]+|\n/).reverse.each do |part|
+            if part == "\n"
+              display_node.add_next_sibling Nokogiri::XML::Node.new "w:br", display_node.document
+            else
+              text_part = display_node.dup
+              text_part.content = part
+              display_node.add_next_sibling text_part
+            end
           end
+        rescue
+          Rails.logger.error("#{seq}  string=#{string.inspect}")
+          Rails.logger.error("ErrorPArams p:#{paragraph.inspect} display_node:#{display_node.inspect} env:#{env.inspect}")
+          "ERROR"
         end
       end
     end
