@@ -64,8 +64,11 @@ module Sablon
             end
           end
         rescue
-          Rails.logger.error("#{seq}  string=#{string.inspect}")
-          Rails.logger.error("ErrorPArams p:#{paragraph.inspect} display_node:#{display_node.inspect} env:#{env.inspect}")
+          Rails.logger.error("ErrorPArams p:#{paragraph.inspect} ")
+          Rails.logger.error("display_node:#{display_node.inspect}")
+          Rails.logger.error("env:#{env.inspect}")
+          Rails.logger.error("ERROR1 #{seq.inspect}")
+          Rails.logger.error("ERROR2 string=#{string.inspect}")
           "ERROR"
         end
       end
