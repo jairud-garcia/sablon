@@ -13,6 +13,7 @@ GEM
     nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
     rake (10.4.2)
+    rexml (3.2.3)
     rubyzip (1.2.1)
     xml-simple (1.1.5)
 
@@ -23,8 +24,9 @@ DEPENDENCIES
   bundler (>= 1.6)
   minitest (~> 5.4)
   rake (~> 10.0)
+  rexml (= 3.2.3)
   sablon!
-  xml-simple
+  xml-simple (~> 1.1.5)
 
 BUNDLED WITH
-   1.14.5
+   2.2.33
