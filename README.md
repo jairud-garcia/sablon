@@ -8,6 +8,11 @@ and efficient.
 
 *Note: Sablon is still in early development. Please report if you encounter any issues along the way.*
 
+## Changes in This Fork
+
+- Switched the data extraction method from Eager Loading to Lazy Loading.
+- Enhanced error handling: if an expression is not found in the context, an error in red will be displayed directly in the resulting document indicating it's not defined.
+
 ## Installation
 
 Add this line to your application's Gemfile:
