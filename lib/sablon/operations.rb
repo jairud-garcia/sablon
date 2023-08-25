@@ -3,12 +3,30 @@ module Sablon
   module Statement
     class Insertion < Struct.new(:expr, :field, :errors)
       def evaluate(env)
-        if content = expr.evaluate(env.context)
-          field.replace(Sablon::Content.wrap(content), env)
+        content = expr.evaluate(env.context)
+        if content
+          content_to_replace = Sablon::Content.wrap(content)
         else
-          errors<<{expression: expr.inspect, message: 'NotFoundInContext'}
-          field.remove
+          content_to_replace = generate_error_content(expr.inspect)
+          # errors<<{expression: expr.inspect, message: 'NotFoundInContext'}
+          # field.remove
         end
+        field.replace(content_to_replace, env)
+      end
+
+      private
+
+      def generate_error_content(expr)
+        word_processing_ml = <<-XML.gsub("\n", "")
+        <w:p>
+          <w:r w:rsidRPr="00B97C39">
+            <w:rPr><w:color w:val="FF0000"/></w:rPr>
+            <w:t>Error: #{expr.inspect} no está definido</w:t>
+          </w:r>
+        </w:p>
+        XML
+        sablon_content = Sablon::Content::WordML.new(word_processing_ml)
+        Sablon::Content.wrap(sablon_content)
       end
     end
 

@@ -31,11 +31,13 @@ class ProcessorDocumentTest < Sablon::TestCase
   def test_simple_field_replacement_with_nil
     result = process(snippet("simple_field"), {"first_name" => nil})
 
-    assert_equal "Hello! My Name is , nice to meet you.", text(result)
+    assert_equal "Error: \"«first_name»\" no está definido", text(result)
     assert_xml_equal <<-document, result
     <w:p>
-      <w:r><w:t xml:space="preserve">Hello! My Name is </w:t></w:r>
-      <w:r w:rsidR="00BE47B1"><w:t xml:space="preserve">, nice to meet you.</w:t></w:r>
+      <w:r w:rsidRPr="00B97C39">
+        <w:rPr><w:color w:val="FF0000"/></w:rPr>
+        <w:t>Error: "«first_name»" no está definido</w:t>
+      </w:r>
     </w:p>
     document
   end
