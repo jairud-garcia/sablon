@@ -5,16 +5,31 @@ module Sablon
       def evaluate(env)
         content = expr.evaluate(env.context)
         if content
-          content_to_replace = Sablon::Content.wrap(content)
+          content_to_replace = merge_content(content)
         else
-          content_to_replace = generate_error_content(expr.inspect)
-          # errors<<{expression: expr.inspect, message: 'NotFoundInContext'}
-          # field.remove
+          content_to_replace = evaluate_prev_expresions(env)
         end
         field.replace(content_to_replace, env)
       end
 
       private
+
+      def merge_content(content)
+        if content.class == Sablon::NullObject
+          field.remove
+        else
+          Sablon::Content.wrap(content)
+        end
+      end
+
+      def evaluate_prev_expresions(env)
+        receiver_content = expr.evaluate_receiver_expr(env.context)
+        if receiver_content.class == Sablon::NullObject
+          field.remove
+        else
+          generate_error_content(expr.inspect)
+        end
+      end
 
       def generate_error_content(expr)
         word_processing_ml = <<-XML.gsub("\n", "")
@@ -103,6 +118,13 @@ module Sablon
           expression.split(".").inject(receiver) do |local, m|
             MergeableHash.new(local)[m]
           end
+        end
+      end
+
+      def evaluate_receiver_expr(context)
+        if expression.include?(".")
+          parts = expression.split(".")
+          LookupOrMethodCall.new(receiver_expr, parts.first).evaluate(context)
         end
       end
 

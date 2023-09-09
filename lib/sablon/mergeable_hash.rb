@@ -7,7 +7,11 @@ module Sablon
     def [] key
       merged_value=lookup(key)
       if merged_value[0]
-        return merged_value[1]
+        if merged_value[1]
+          return merged_value[1]
+        else
+          return Sablon::NullObject.new(nil)
+        end
       else
         super(key)
       end
@@ -46,5 +50,10 @@ module Sablon
     def _merged_objects
       @_merged_objects
     end
+
+  end
+
+  class NullObject < Struct.new(:value )
+    
   end
 end
