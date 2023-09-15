@@ -37,8 +37,10 @@ module Sablon
         end
 
         def replace(content, env)
-          replace_field_display(pattern_node, content, env)
-          (@nodes - [pattern_node]).each(&:remove)
+          unless pattern_node.blank?
+            replace_field_display(pattern_node, content, env)
+            (@nodes - [pattern_node]).each(&:remove)
+          end
         end
 
         def remove
@@ -74,9 +76,11 @@ module Sablon
         end
 
         def replace(content, env)
-          remove_extra_runs!
-          replace_field_display(@node, content, env)
-          @node.replace(@node.children)
+          unless @node.blank?
+            remove_extra_runs!
+            replace_field_display(@node, content, env)
+            @node.replace(@node.children)
+          end
         end
 
         def remove
