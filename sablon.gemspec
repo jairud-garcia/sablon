@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-# stub: sablon 0.0.21 ruby lib
+
+# stub: sablon 0.0.22 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "sablon".freeze
-  s.version = "0.0.21"
+  s.version = "0.0.22"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
@@ -25,30 +26,30 @@ Gem::Specification.new do |s|
   if s.respond_to? :specification_version then
     s.specification_version = 4
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<nokogiri>.freeze, [">= 1.6.0"])
-      s.add_runtime_dependency(%q<rubyzip>.freeze, [">= 1.1"])
-      s.add_development_dependency(%q<bundler>.freeze, [">= 1.6"])
-      s.add_development_dependency(%q<rake>.freeze, ["~> 10.0"])
-      s.add_development_dependency(%q<minitest>.freeze, ["~> 5.4"])
-      s.add_development_dependency(%q<xml-simple>.freeze, ["~> 1.1.5"])
-      s.add_development_dependency(%q<rexml>.freeze, ["= 3.2.3"])
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new("1.2.0") then
+      s.add_runtime_dependency("nokogiri".freeze, [">= 1.6.0"])
+      s.add_runtime_dependency("rubyzip".freeze, [">= 1.1"])
+      s.add_development_dependency("bundler".freeze, [">= 1.6"])
+      s.add_development_dependency("rake".freeze, ["~> 10.0"])
+      s.add_development_dependency("minitest".freeze, ["~> 5.4"])
+      s.add_development_dependency("xml-simple".freeze, ["~> 1.1.5"])
+      s.add_development_dependency("rexml".freeze, ["= 3.2.3"])
     else
-      s.add_dependency(%q<nokogiri>.freeze, [">= 1.6.0"])
-      s.add_dependency(%q<rubyzip>.freeze, [">= 1.1"])
-      s.add_dependency(%q<bundler>.freeze, [">= 1.6"])
-      s.add_dependency(%q<rake>.freeze, ["~> 10.0"])
-      s.add_dependency(%q<minitest>.freeze, ["~> 5.4"])
-      s.add_dependency(%q<xml-simple>.freeze, ["~> 1.1.5"])
-      s.add_dependency(%q<rexml>.freeze, ["= 3.2.3"])
+      s.add_dependency("nokogiri".freeze, [">= 1.6.0"])
+      s.add_dependency("rubyzip".freeze, [">= 1.1"])
+      s.add_dependency("bundler".freeze, [">= 1.6"])
+      s.add_dependency("rake".freeze, ["~> 10.0"])
+      s.add_dependency("minitest".freeze, ["~> 5.4"])
+      s.add_dependency("xml-simple".freeze, ["~> 1.1.5"])
+      s.add_dependency("rexml".freeze, ["= 3.2.3"])
     end
   else
-    s.add_dependency(%q<nokogiri>.freeze, [">= 1.6.0"])
-    s.add_dependency(%q<rubyzip>.freeze, [">= 1.1"])
-    s.add_dependency(%q<bundler>.freeze, [">= 1.6"])
-    s.add_dependency(%q<rake>.freeze, ["~> 10.0"])
-    s.add_dependency(%q<minitest>.freeze, ["~> 5.4"])
-    s.add_dependency(%q<xml-simple>.freeze, ["~> 1.1.5"])
-    s.add_dependency(%q<rexml>.freeze, ["= 3.2.3"])
+    s.add_dependency("nokogiri".freeze, [">= 1.6.0"])
+    s.add_dependency("rubyzip".freeze, [">= 1.1"])
+    s.add_dependency("bundler".freeze, [">= 1.6"])
+    s.add_dependency("rake".freeze, ["~> 10.0"])
+    s.add_dependency("minitest".freeze, ["~> 5.4"])
+    s.add_dependency("xml-simple".freeze, ["~> 1.1.5"])
+    s.add_dependency("rexml".freeze, ["= 3.2.3"])
   end
 end
