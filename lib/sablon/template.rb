@@ -1,3 +1,4 @@
+require "posix/spawn"
 require "fileutils"
 require "tempfile"
 
@@ -62,8 +63,8 @@ module Sablon
       def zip_content(tmp_dir, output_path)
         File.delete(output_path) if File.exist?(output_path)
         _, writer = IO.pipe
-        pid = Process.spawn("zip -r -D  #{output_path} .", chdir:  tmp_dir, :out => writer)
-        Process.wait(pid)
+        pid = POSIX::Spawn.spawn("zip -r -D  #{output_path} .", chdir:  tmp_dir, :out => writer)
+        Process.waitpid(pid)
         writer.close
       end
 

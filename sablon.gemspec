@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 
-# stub: sablon 0.0.23 ruby lib
+# stub: sablon 0.0.24 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "sablon".freeze
-  s.version = "0.0.23"
+  s.version = "0.0.24"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
