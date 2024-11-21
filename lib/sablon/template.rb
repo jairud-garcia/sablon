@@ -61,7 +61,10 @@ module Sablon
 
       def zip_content(tmp_dir, output_path)
         File.delete(output_path) if File.exist?(output_path)
-        Process.spawn("zip -r -D  #{output_path} .", chdir:  tmp_dir)
+        _, writer = IO.pipe
+        pid = Process.spawn("zip -r -D  #{output_path} .", chdir:  tmp_dir, :out => writer)
+        Process.wait(pid)
+        writer.close
       end
 
       # Writes the file in a tmp directory
