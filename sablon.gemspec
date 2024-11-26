@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 
-# stub: sablon 0.0.24 ruby lib
+# stub: sablon 0.0.25 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "sablon".freeze
-  s.version = "0.0.24"
+  s.version = "0.0.25"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
@@ -51,5 +51,6 @@ Gem::Specification.new do |s|
     s.add_dependency("minitest".freeze, ["~> 5.4"])
     s.add_dependency("xml-simple".freeze, ["~> 1.1.5"])
     s.add_dependency("rexml".freeze, ["= 3.2.3"])
+    s.add_dependency("posix-spawn".freeze, ["0.3.15"])
   end
 end
