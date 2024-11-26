@@ -4,44 +4,11 @@ module Sablon
     class Insertion < Struct.new(:expr, :field, :errors)
       def evaluate(env)
         content = expr.evaluate(env.context)
-        if content
-          content_to_replace = merge_content(content)
+        if !content.nil?
+          field.replace(Sablon::Content.wrap(content), env)
         else
-          content_to_replace = evaluate_prev_expresions(env)
-        end
-        field.replace(content_to_replace, env)
-      end
-
-      private
-
-      def merge_content(content)
-        if content.class == Sablon::NullObject
           field.remove
-        else
-          Sablon::Content.wrap(content)
         end
-      end
-
-      def evaluate_prev_expresions(env)
-        receiver_content = expr.evaluate_receiver_expr(env.context)
-        if receiver_content.class == Sablon::NullObject
-          field.remove
-        else
-          generate_error_content(expr.inspect)
-        end
-      end
-
-      def generate_error_content(expr)
-        word_processing_ml = <<-XML.gsub("\n", "")
-        <w:p>
-          <w:r w:rsidRPr="00B97C39">
-            <w:rPr><w:color w:val="FF0000"/></w:rPr>
-            <w:t>Error: #{expr.inspect} no está definido</w:t>
-          </w:r>
-        </w:p>
-        XML
-        sablon_content = Sablon::Content::WordML.new(word_processing_ml)
-        Sablon::Content.wrap(sablon_content)
       end
     end
 

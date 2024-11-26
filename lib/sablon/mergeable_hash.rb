@@ -10,7 +10,7 @@ module Sablon
         if !resulting_value.nil?
           resulting_value
         else
-          Sablon::NullObject.new(nil)
+          Sablon::NullObject.new
         end
       else
         super(key)
@@ -50,6 +50,9 @@ module Sablon
       attr_reader :_merged_objects
   end
 
-  class NullObject < Struct.new(:value)
+  class NullObject
+    def nil?
+      true
+    end
   end
 end
